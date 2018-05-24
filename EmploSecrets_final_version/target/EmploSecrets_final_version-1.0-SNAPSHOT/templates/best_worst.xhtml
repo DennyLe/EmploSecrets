@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+
+    </h:head>
+    <h:body>
+        <ui:composition>
+
+            <div class="nav">
+
+                <h:form>
+                    <p:commandLink styleClass="bbutton" actionListener="#{employerListController.fillEmployersByRate}" title="#{msg.best}" type="button" update=":emplosForm :commentForm :emplosCountForm :commentsCountForm">  
+                        <p class="edit">#{msg.best}</p> 
+                    </p:commandLink> 
+
+                    <p:commandLink styleClass="wbutton" actionListener="#{employerListController.fillEmployersByAntiRate}" title="#{msg.worst}" type="button" update=":emplosForm :commentForm :emplosCountForm :commentsCountForm">  
+                        <p class="delete">#{msg.worst}</p>
+                    </p:commandLink> 
+                </h:form>
+
+            </div>
+
+        </ui:composition>
+    </h:body>
+</html>
+

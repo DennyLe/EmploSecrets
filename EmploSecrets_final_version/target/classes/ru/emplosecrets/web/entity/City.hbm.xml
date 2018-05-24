@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 16, 2018 10:01:03 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="ru.emplosecrets.web.entity.City" table="city" catalog="emplosecrets" optimistic-lock="version">
+        <id name="cityId" type="java.lang.Long">
+            <column name="city_id" />
+            <generator class="identity" />
+        </id>
+        <property name="name_ru" type="string">
+            <column name="name_ru" length="100" not-null="true" />
+        </property>
+        <property name="name_en" type="string">
+            <column name="name_en" length="100" not-null="true" />
+        </property>
+        <set name="employers" table="employer" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="city_id" not-null="true" />
+            </key>
+            <one-to-many class="ru.emplosecrets.web.entity.Employer" />
+        </set>
+    </class>
+</hibernate-mapping>

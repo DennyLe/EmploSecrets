@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <f:view locale="#{localeChanger.currentLocale}">      
+        <h:head>
+            <link rel="shortcut icon" type="image/png" href="#{resource['images/icon_tab_mini.png']}"/>
+        </h:head>
+
+        <h:body>
+
+            <f:facet name="last">
+                <h:outputStylesheet library="css" name="main.css" />
+            </f:facet>
+
+            <div id="wrap">
+                <div class="content">
+                    
+                    <div class="icon_error">
+                        <p:graphicImage name="images/#{localeChanger.currentLocale}/icon_error.png"/>
+                    </div>
+                    <div class="error-div">
+                        <p:outputLabel> #{msg.session_expired}</p:outputLabel>
+                        <h:form>
+                            <h:commandLink action="#{user.goHome()}" value="#{msg.go_home}"/>
+                        </h:form>
+                    </div>
+
+                </div>
+            </div>
+        </h:body>
+    </f:view>
+</html>
+

@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 16, 2018 10:01:03 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="ru.emplosecrets.web.entity.User" table="user" catalog="emplosecrets" optimistic-lock="version">
+        <id name="userId" type="java.lang.Long">
+            <column name="user_id" />
+            <generator class="identity" />
+        </id>
+        <property name="username" type="string">
+            <column name="username" length="50" unique="true" />
+        </property>
+        <property name="password" type="string">
+            <column name="password" length="200" />
+        </property>
+        <property name="enabled" type="java.lang.Boolean">
+            <column name="enabled" />
+        </property>
+        <property name="email" type="string">
+            <column name="email" length="50" />
+        </property>
+        <set name="comments" table="comment" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="user_id" not-null="true" />
+            </key>
+            <one-to-many class="ru.emplosecrets.web.entity.Comment" />
+        </set>
+    </class>
+</hibernate-mapping>

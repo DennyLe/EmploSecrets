@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 16, 2018 10:01:03 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="ru.emplosecrets.web.entity.Employer" table="employer" catalog="emplosecrets" optimistic-lock="version">
+        <id name="emploId" type="java.lang.Long">
+            <column name="emplo_id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="city" class="ru.emplosecrets.web.entity.City" fetch="join" lazy="false">
+            <column name="city_id" not-null="true" />
+        </many-to-one>
+        <many-to-one name="industry" class="ru.emplosecrets.web.entity.Industry" fetch="join" lazy="false">
+            <column name="ind_id" not-null="true" />
+        </many-to-one>
+        <property name="name" type="string">
+            <column name="name" length="100" not-null="true" />
+        </property>
+        <property name="image" type="binary">
+            <column name="image" />
+        </property>
+        <property name="telephone" type="string">
+            <column name="telephone" length="12" />
+        </property>
+        <property name="email" type="string">
+            <column name="email" length="50" />
+        </property>
+        <property name="site" type="string">
+            <column name="site" length="100" />
+        </property>
+        <property name="descr" type="string">
+            <column name="descr" length="1000" />
+        </property>
+        <property name="rating" type="java.lang.Integer">
+            <column name="rating" />
+        </property>
+        <property name="voteCount" type="java.lang.Long">
+            <column name="vote_count" />
+        </property>
+        <set name="votes" table="vote" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="emplo_id" not-null="true" />
+            </key>
+            <one-to-many class="ru.emplosecrets.web.entity.Vote" />
+        </set>
+        <set name="comments" table="comment" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="emplo_id" not-null="true" />
+            </key>
+            <one-to-many class="ru.emplosecrets.web.entity.Comment" />
+        </set>
+    </class>
+</hibernate-mapping>

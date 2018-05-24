@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <f:view locale="#{localeChanger.currentLocale}">
+        <h:head>
+
+        </h:head>
+
+        <h:body>
+
+            <p:dialog id="editDialog" modal="true" widgetVar="dlgEditEmployer" dynamic="true" resizable="false" header="#{msg.edit_company}" closable="false" onHide="#{employerListController.cancelModes()}">
+
+                <h:form id="formEditEmployer"  rendered="#{employerListController.editMode or employerListController.addMode}">
+
+                    <div class="popup-info">
+
+                        <div class="avatar-box">
+                            <p:graphicImage  value="#{imageController.defaultImage}" width="200" height="150" id="emploImage" rendered="#{employerListController.editMode}"/>
+                            <h:form enctype="multipart/form-data" id="formUploadImage" >
+                                <p:fileUpload id="imageUpload" label="#{msg.load}" fileUploadListener="#{imageController.handleFileUpload}" update="messagesImage emploNewImage" sizeLimit="#{imageController.imageMaxSize}" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" multiple="false" auto="true"/>  
+                                <p:graphicImage value="#{imageController.uploadedImage}" library="images" width="110" height="150" id="emploNewImage"/>
+                                <p:messages id="messagesImage" showDetail="true" for="formUploadImage"/>
+                            </h:form>
+                        </div>
+
+
+                        <div class="ava-info">
+
+                            <div class="block">
+                                <p>#{msg.company_name}</p>	
+                                <div class="ava-form">
+                                    <p:inputMask id="inputEmploName" value="#{employerListController.selectedEmployer.name}" maxlength="100" mask=""/>
+                                </div> 
+                            </div>
+
+                            <div class="block">
+                                <p>#{msg.city_name}</p>	
+                                <div class="ava-form">
+                                    <p:selectOneMenu value="#{employerListController.selectedEmployer.city}" converter="#{cityController}">
+                                        <f:selectItems value="${cityController.selectItems}"/>
+                                    </p:selectOneMenu>
+                                </div> 
+                            </div>
+
+                            <div class="block">
+                                <p>#{msg.industry}</p>	
+                                <div class="ava-form">
+                                    <p:selectOneMenu  value="#{employerListController.selectedEmployer.industry}" converter="#{industryController}"  >
+                                        <f:selectItems value="${industryController.selectItems}"/>
+                                    </p:selectOneMenu>
+                                </div> 
+                            </div>
+
+                            <div class="block">
+                                <p>#{msg.telephone}</p>	
+                                <div class="ava-form">
+                                    <p:inputMask id="inputIsbn" value="#{employerListController.selectedEmployer.telephone}" maxlength="11" mask="99999999999" />
+                                </div> 
+                            </div>
+
+                            <div class="block">
+                                <p>#{msg.email}</p>	
+                                <div class="ava-form">
+                                    <p:inputMask id="inputPublishYear" value="#{employerListController.selectedEmployer.email}" maxlength="50" mask=""/>
+                                </div> 
+                            </div>
+
+                            <div class="block">
+                                <p>#{msg.site}</p>	
+                                <div class="ava-form">
+                                    <p:inputMask id="inputPageCount" value="#{employerListController.selectedEmployer.site}" maxlength="100" mask=""/>  
+                                </div> 
+                            </div>
+
+                            <div class="block">
+                                <p>#{msg.descr} <span><h:outputText id="counter" /></span></p>	
+                                <div class="ava-form">
+                                    <p:inputTextarea id="inputDescr" value="#{employerListController.selectedEmployer.descr}" cols="60" rows="20" maxlength="1000" counter="counter" counterTemplate="{0} #{msg.letters_left}" autoResize="false"  />
+                                </div> 
+                            </div>	
+
+                        </div>
+
+
+                        <div class="bottom-info">
+                            <div class="error-div"> <h:messages styleClass="error" id="validationError"/></div>
+                            <div class="button-right">
+
+                                <p:commandLink id="saveButton" action="#{employerListController.saveEmployer()}" styleClass="cancel" value="#{msg.save}" onclick="this.disabled = true;" update=":formEditEmployer :emplosForm:emplosList :emplosCountForm :growlMessage"/>
+                                <p:commandLink action="#{employerListController.cancelModes()}"  value="#{msg.cancel}" immediate="true" global="false" styleClass="save"/>
+
+                            </div>
+                        </div>	
+
+                    </div>
+
+                </h:form> 
+
+            </p:dialog>
+
+        </h:body>
+    </f:view>
+</html>

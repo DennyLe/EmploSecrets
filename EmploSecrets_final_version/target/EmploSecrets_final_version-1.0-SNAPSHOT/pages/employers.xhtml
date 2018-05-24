@@ -1,0 +1,233 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <link rel="shortcut icon" type="image/png" href="#{resource['images/icon_tab_mini.png']}"/>
+    </h:head>
+    <h:body>
+
+        <ui:composition template="/templates/emplosecrets.xhtml">
+
+            <ui:define name="title">#{msg.employer_list}</ui:define>
+
+            <ui:define name="content">
+
+                <p:growl life="3000" id="growlMessage" globalOnly="true"/> 
+
+                <ui:include src="modals/editEmployer.xhtml" />
+                <ui:include src="modals/aboutProject.xhtml" />
+                <ui:include src="modals/contacts.xhtml" />
+                <ui:include src="modals/sendMail.xhtml" />
+                <ui:include src="modals/addComment.xhtml" />
+
+                <h:form id="emplosForm">
+
+                    <p:dataGrid rowIndexVar="rowIndex" columns="2" lazy="true" var="em" value="#{employerListController.employerListModel}"  id="emplosList" styleClass="emplos_list"  paginator="true" rows="4" paginatorPosition="bottom"
+                                rowsPerPageTemplate="4,10,20" paginatorTemplate="{RowsPerPageDropdown} {PageLinks}"  paginatorAlwaysVisible="false" emptyMessage="" rendered="#{!employerListController.commentMode}">  
+
+                        <div class="item">
+
+                            <div class="image-info">
+
+                                <p:graphicImage value="/ShowImage?index=#{indexController.incrementemployerIndex}" width="140" height="100" cache="false"/>
+
+                                <p:panelGrid id="ratingPanel" columns="2" styleClass="rating-panel">
+                                    <p:rating id="rating" value="#{em.rating}" styleClass="rating" cancel="false" stars="5" readonly="true"/>
+                                    <p:outputLabel id="voteCount" value="(#{em.voteCount})" styleClass="vote-count"/>
+                                </p:panelGrid>
+
+                            </div>
+
+                            <div class="info">
+
+                                <div class="emplo_name">  
+                                    <p:commandLink id="emploName" styleClass="title" actionListener="#{employerListController.fillCommentsByEmployer()}" update=":emplosForm  :commentForm :emplosCountForm :commentsCountForm">  
+                                        #{em.name}
+                                        <f:param name="emplo_id" value="#{em.emploId}"/>
+                                        <f:setPropertyActionListener value="#{em}"  target="#{employerListController.selectedEmployer}" />  
+                                    </p:commandLink> 
+                                </div>
+
+                                <span>#{em.city}</span>
+                                <p><strong>#{msg.site}  </strong><a href="http://#{em.site}" target="_blank">#{em.site}</a></p>
+                                <p><strong>#{msg.email}  </strong> #{em.email}</p>
+                                <p><strong>#{msg.telephone}  </strong> #{em.telephone}</p>
+
+                            </div>
+
+                            <div style="clear:both;"/>
+
+                            <p:commandLink styleClass="mr" actionListener="#{employerListController.switchEditMode}" title="#{msg.edit_company}" update="formEditEmployer :formEditEmployer:formUploadImage" rendered="#{request.isUserInRole('admin')}" >  
+                                <p class="edit">#{msg.edit}</p>
+                                <f:setPropertyActionListener value="#{em}"  target="#{employerListController.selectedEmployer}" />  
+                            </p:commandLink> 
+
+                            <p:commandLink styleClass="delete-button" title="#{msg.delete_company}" type="button" onclick="PF('dlgDeleteEmployer').show()" rendered="#{request.isUserInRole('admin')}">  
+                                <p class="delete">#{msg.delete}</p>
+                                <f:setPropertyActionListener value="#{em}"  target="#{employerListController.selectedEmployer}" />
+                            </p:commandLink> 
+
+                        </div>
+
+                    </p:dataGrid> 
+
+                    
+                    <p:confirmDialog widgetVar="dlgDeleteEmployer" header="#{msg.confirm}" message="#{msg.delete_confirm}?" width="300px" styleClass="dialog_delete">    
+                        <div class="button-right">
+                            <h:panelGrid columns="2" style="margin:0 auto; width:200px;">
+                                <p:commandLink id="btnDeletedEmplo" value="#{msg.yes}" action="#{employerListController.deleteEmployer}" styleClass="save" update=":emplosForm:emplosList :emplosCountForm :growlMessage" onclick="PF('dlgDeleteEmployer').hide()"/>  
+                                <p:commandLink value="#{msg.no}" styleClass="cancel" onclick="PF('dlgDeleteEmployer').hide()" type="button"/>       
+                            </h:panelGrid>
+                        </div>
+                    </p:confirmDialog>  
+
+
+                    <div class="box-ch">
+                        <h:form rendered="#{!employerListController.commentMode}">
+                            <h4><p:outputLabel id="notFound" value="#{msg.not_founded}" /></h4>
+                            <h:form id="add-action" rendered="true">
+                                <p:commandLink  actionListener="#{employerListController.switchAddMode}" update=":formEditEmployer :formEditEmployer:formUploadImage :formEditEmployer">
+                                    <h:outputText value="#{msg.add_employer}" title="#{msg.add_employer}"/>
+                                </p:commandLink>
+                            </h:form>
+                        </h:form>
+                    </div>
+
+                </h:form>
+
+            </ui:define>
+
+            <!--/////////////Comment Form//////////////////////////////////////////////////////////////////////////////////////////////////-->
+
+            <ui:define name="comment_form">
+                <h:form id="commentForm">
+
+                    <!--/////////////////////////Employer for Comments Table///////////////////////////////-->
+
+                    <p:dataGrid rowIndexVar="rowIndex" columns="1" lazy="true" var="em" value="#{employerListController.selectedEmployer}"  id="emplosForComments" styleClass="emplos_list" rows="4" rendered="#{employerListController.commentMode}">  
+
+                        <div class="iitem">
+
+                            <div class="iimage-info">
+
+                                <p:graphicImage value="#{imageController.defaultImage}" width="140" height="100" cache="false"/>
+
+                                <p:panelGrid id="ratingPanel" columns="2" styleClass="rating-panel">
+                                    <p:rating id="rating" value="#{em.rating}" styleClass="rating" cancel="false" stars="5" readonly="true"/>
+                                    <p:outputLabel id="voteCount" value="(#{em.voteCount})" styleClass="vote-count"/>
+                                </p:panelGrid>
+
+                            </div>
+
+                            <div class="info">
+
+                                <div class="emplo_name">  
+                                    <p:commandLink id="emploName" styleClass="title" actionListener="#">  
+                                        #{em.name}
+                                    </p:commandLink> 
+                                </div>
+
+                                <span>#{em.city}</span>
+                                <p><strong>#{msg.site}  </strong><a href="http://#{em.site}" target="_blank">#{em.site}</a></p>
+                                <p><strong>#{msg.email}  </strong> #{em.email}</p>
+                                <p><strong>#{msg.telephone}  </strong> #{em.telephone}</p>
+
+                            </div>
+
+                            <div class="descr">
+
+                                <p><strong>#{msg.descr}</strong></p>
+                                <p ><h:outputText value="#{em.descr}"/></p>
+
+                            </div>
+
+                            <div style="clear:both;"/>
+
+                        </div>
+
+                    </p:dataGrid>
+
+                    <!--////////////////////////Comments Table/////////////////////////////-->           
+
+                    <p:dataGrid rowIndexVar="rowIndex" columns="1" lazy="true" var="com" value="#{employerListController.commentBean.list}" emptyMessage=""  id="commentList" styleClass="emplos_list" rendered="#{employerListController.commentMode}">  
+
+                        <div class="comitem">
+
+                            <div class="info">
+                                <p class="name">#{com.user.username}</p> 
+                                <p class="date">#{com.date}</p>
+                                <p class="text">#{com.text}</p>
+                            </div>
+
+                            <p:commandLink styleClass="delete-button" title="#{msg.delete}" type="button" onclick="PF('dlgDeleteComment').show()" rendered="#{request.isUserInRole('admin')}">  
+                                <p class="delete">#{msg.delete}</p>
+                                <f:setPropertyActionListener value="#{com}"  target="#{employerListController.selectedComment}" />
+                            </p:commandLink>
+
+                        </div>
+
+                    </p:dataGrid>
+
+                    <p:confirmDialog widgetVar="dlgDeleteComment" header="#{msg.confirm}" message="#{msg.delete_comment}?" width="300px" styleClass="dialog_delete">    
+                        <div class="button-right">
+                            <h:panelGrid columns="2" style="margin:0 auto; width:200px;">
+                                <p:commandLink id="btnDeletedComment" value="#{msg.yes}" action="#{employerListController.deleteComment}" styleClass="save" update=":emplosForm: :emplosCountForm :commentForm :commentsCountForm :growlMessage" onclick="PF('dlgDeleteComment').hide()"/>  
+                                <p:commandLink value="#{msg.no}" styleClass="cancel" onclick="PF('dlgDeleteComment').hide()" type="button"/>       
+                            </h:panelGrid>
+                        </div>
+                    </p:confirmDialog>  
+
+                    
+                    <div class="box-chch">
+                        <h4><p:outputLabel id="addComment" value="#{msg.addyourcomment}" rendered="#{employerListController.commentMode}"/></h4>
+
+                        <h:form id="add-action" rendered="#{employerListController.commentMode}">
+                            <p:commandLink  actionListener="#{employerListController.switchAddComment}" update=":formAddComment:add_rating :formAddComment">
+                                <h:outputText value="#{msg.addcomment}" title="#{msg.addcomment}"/>
+                            </p:commandLink>
+                        </h:form>
+                    </div>
+
+                </h:form>
+            </ui:define>>
+
+            <!--///////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+
+            <ui:define name="emplos_count">
+                <h:form id="emplosCountForm">
+                    <div class="box-sh" >
+                        <h1><p:outputLabel id="emplosCount" value="#{msg.founded}:  #{employerListController.pager.totalEmployersCount} #{msg.employers}" rendered="#{!employerListController.commentMode}"/></h1>
+
+                        <h:form id="add-action" rendered="#{!employerListController.commentMode}">
+                            <p:commandLink  actionListener="#{employerListController.switchAddMode}" update=":formEditEmployer :formEditEmployer:formUploadImage :formEditEmployer">
+                                <h:outputText value="#{msg.add_employer}" title="#{msg.add_employer}"/>
+                            </p:commandLink>
+                        </h:form>                
+                    </div>
+                </h:form>
+            </ui:define>
+
+            <ui:define name="comments_count">
+                <h:form id="commentsCountForm">
+                    <div class="box-chch" >
+                        <h1><p:outputLabel id="commentsCount" value="#{msg.founded}:  #{employerListController.commentBean.totalCommentsCount} #{msg.comments}" rendered="#{employerListController.commentMode}"/></h1>
+
+                        <h:form id="add-action" rendered="#{employerListController.commentMode}">
+                            <p:commandLink  actionListener="#{employerListController.switchAddComment()}" update=":formAddComment:add_rating :formAddComment">
+                                <h:outputText value="#{msg.addcomment}" title="#{msg.addcomment}"/>
+                            </p:commandLink>
+                        </h:form>                
+                    </div>
+                </h:form>
+            </ui:define>
+
+            
+        </ui:composition>
+
+    </h:body>
+</html>
+

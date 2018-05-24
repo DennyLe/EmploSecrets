@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <f:view locale="#{localeChanger.currentLocale}">  
+        <h:head>
+            <link rel="shortcut icon" type="image/png" href="#{resource['images/icon_tab_mini.png']}"/>
+            <title>#{msg.welcome_title}</title>
+        </h:head>
+        <h:body>
+
+            <f:facet name="last">
+                <h:outputStylesheet library="css" name="authorization.css" />
+                <h:outputScript library="js" name="emplos.js" target="head"/>
+            </f:facet>
+
+            <noscript>
+                <h2 style="margin-top:200px;"><p>#{msg.enable_js}</p></h2>
+                <style type="text/css">
+                    .authorization { display:none; }
+                    p { text-align: center; }
+                </style>
+            </noscript>
+
+            <div class="authorization">
+
+                <h:panelGroup layout="block" styleClass="lg" id="divLogo">
+                    <h:graphicImage  name="images/#{localeChanger.currentLocale}/logo.png"/>
+                </h:panelGroup>
+                
+                <ui:include src="/templates/locales.xhtml"/>
+
+                <div class="clear"/>
+
+                <h:form styleClass="login_form" id="formLogin">
+
+                    <p:inputText  id="inputUsername" value="#{user.username}" required="true" requiredMessage="#{msg.login_required}" styleClass="aut-text"/>
+
+                    <p:password  id="inputPassword"  value="#{user.password}" redisplay="true" required="true" requiredMessage="#{msg.password_required}" styleClass="aut-text"/>
+
+                    <div style="float:left; height: 15px; width: 100%; text-align: center; height:40px;">
+                        <h:messages styleClass="error" id="messages"/>
+                    </div>
+
+                    <div class="div-login-button">
+
+                        <p:panelGrid columns="3" columnClasses="col, col, col" styleClass="panel-login">
+
+                            <p:commandButton id="btnLogin" action="#{user.login()}" value="#{msg.entry}" styleClass="login_button" update="formLogin" onclick="this.disabled = true;" oncomplete="this.disabled=false"/>
+
+                            <p:ajaxStatus id="ajaxStatusPanel">  
+                                <f:facet name="start">      
+                                    <h:graphicImage library="images" name="ajax_loading.gif"/> 
+                                </f:facet>  
+                                <f:facet name="complete">  
+                                    <h:outputText value="" />  
+                                </f:facet>  
+                            </p:ajaxStatus>  
+
+                            <div class="save-me">
+                                <label><input type="checkbox" /> #{msg.save_me}</label>
+                            </div>
+
+                        </p:panelGrid>
+
+                    </div>
+
+                    <script language="javascript">
+                        document.getElementById("formLogin:inputUsername").setAttribute("placeholder", "#{msg.input_name}");
+                        document.getElementById("formLogin:inputPassword").setAttribute("placeholder", "#{msg.input_password}");
+                    </script>
+
+                </h:form>
+
+            </div>
+
+        </h:body>
+
+    </f:view>  
+</html>
+

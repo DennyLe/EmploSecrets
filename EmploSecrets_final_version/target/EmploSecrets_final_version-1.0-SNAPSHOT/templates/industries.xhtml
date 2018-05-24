@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+        <ui:composition>
+            <div class="left-menu">
+                <h:form styleClass="industries" id="industriesForm">
+                    <ul>
+                        <p><strong>#{msg.catalog}</strong></p>
+                        <ui:repeat value="#{industryController.industryList}" var="ind">
+                            <li>
+                                <p:commandLink update=":emplosForm :commentForm :emplosCountForm :commentsCountForm :industriesForm" value="#{localeChanger.currentLocale == 'ru' ? ind.name_ru : ind.name_en}" styleClass="#{ind.indId == employerListController.selectedIndustryId ? 'selected_link':''}" actionListener="#{employerListController.fillEmployersByIndustry()}">
+                                    <f:param name="industry_id" value="#{ind.indId}" />
+                                </p:commandLink>
+                            </li>
+                        </ui:repeat>
+
+                        <br/><hr/><br/>
+                        <p><strong>#{msg.cities}</strong></p>
+                        <ui:repeat value="#{cityController.cityList}" var="c">
+                            <li>
+                                <p:commandLink update=":emplosForm :commentForm :emplosCountForm :commentsCountForm :industriesForm" value="#{localeChanger.currentLocale == 'ru' ? c.name_ru : c.name_en}" styleClass="#{c.cityId == employerListController.selectedCityId ? 'selected_link':''}" actionListener="#{employerListController.fillEmployersByCity()}">
+                                    <f:param name="city_id" value="#{c.cityId}" />
+                                </p:commandLink>
+                            </li>
+                        </ui:repeat>
+
+                    </ul>
+                </h:form>
+            </div>
+        </ui:composition>
+    </h:body>
+</html>
+

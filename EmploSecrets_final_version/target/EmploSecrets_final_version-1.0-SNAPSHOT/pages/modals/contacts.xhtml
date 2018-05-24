@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <p:dialog id="contactDialog" widgetVar="dlgContacts" modal="true" dynamic="true" resizable="false" header="#{msg.contacts}" closable="false" onHide="">
+
+            <h:form id="formContact"  rendered="true">
+
+                <div class="popup-info">
+                    <div class="ava-infooo">
+                        <div class="blockkk">
+                            <div class="qw">#{msg.contact_developer}:</div>
+                            <p>den-kuzen@mail.ru</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bottom-info">
+                    <div class="button-right">
+                        <p:commandLink id="saveButton" styleClass="cancel" value="#{msg.close}" onclick="PF('dlgContacts').hide()"/>
+                    </div>
+                </div>
+
+            </h:form> 
+
+        </p:dialog>
+
+    </h:body>
+</html>
+
+

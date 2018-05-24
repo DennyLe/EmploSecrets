@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+
+    </h:head>
+    <h:body>
+
+        <p:dialog id="addCommentDialog" modal="true" widgetVar="dlgAddComment" dynamic="false" resizable="false" header="#{msg.addingcomment}" closable="false">
+
+            <h:form id="formAddComment">
+
+                <div class="popup-info">
+
+                    <div class="ava-info">
+
+                        <h:form id="add_rating">
+
+                            <div class="block">
+                                <p>#{msg.rating}</p>	
+                                <div class="ava-formm">
+                                    
+                                    <p:rating id="rating" styleClass="rating" cancel="false" value="#{employerListController.selectedEmployer.rating}" >
+                                        <p:ajax event="rate" listener="#{employerListController.onrate}" update=""/>
+                                    </p:rating>
+                                    
+                                </div> 
+                            </div>
+
+                        </h:form>
+
+                        <div class="block">
+                            <p>#{msg.comment_text} <span><h:outputText id="counter" /></span></p>	
+                            <div class="ava-formm">
+                                <p:inputTextarea id="inputMailText" styleClass="mail-message" value="#{employerListController.newComment.text}" cols="70" rows="20" maxlength="1000" counter="counter" counterTemplate="{0} #{msg.letters_left}" autoResize="false"  />
+                            </div> 
+                        </div>	
+
+                    </div>
+
+                    <div class="bottomm-info">
+                        <div class="error-div"> <h:messages styleClass="error" id="validationError"/></div>
+
+                        <div class="button-right">
+                            <p:commandLink id="saveButton" onclick="this.disabled = true;" oncomplete="this.disabled=false" action="#{employerListController.saveComment()}" styleClass="save" value="#{msg.send}" update=":formAddComment :commentForm :growlMessage" />                            
+                            <p:commandLink styleClass="cancel" value="#{msg.cancel}" onclick="PF('dlgAddComment').hide()" immediate="true" global="false"/>
+                        </div>
+                    </div>	
+
+                </div>
+
+            </h:form> 
+
+        </p:dialog>
+
+    </h:body>
+</html>
+
+

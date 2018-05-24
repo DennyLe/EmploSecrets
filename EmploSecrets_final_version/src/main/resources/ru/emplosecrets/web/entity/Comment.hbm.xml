@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 16, 2018 10:01:03 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="ru.emplosecrets.web.entity.Comment" table="comment" catalog="emplosecrets" optimistic-lock="version">
+        <id name="comId" type="java.lang.Long">
+            <column name="com_id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="employer" class="ru.emplosecrets.web.entity.Employer" fetch="join">
+            <column name="emplo_id" not-null="true" />
+        </many-to-one>
+        <many-to-one name="user" class="ru.emplosecrets.web.entity.User" fetch="join">
+            <column name="user_id" not-null="true" />
+        </many-to-one>
+        <property name="date" type="timestamp">
+            <column name="date" length="19" not-null="true" />
+        </property>
+        <property name="text" type="string">
+            <column name="text" length="1000" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

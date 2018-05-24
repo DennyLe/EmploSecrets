@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <p:dialog id="aboutDialog" widgetVar="dlgAboutProj" modal="true" dynamic="true" resizable="false" header="#{msg.about_proj}" closable="false" onHide="">
+
+            <h:form id="formAboutProject"  rendered="true">
+
+                <div class="popup-info">
+                    <div class="ava-infoo">
+                        <div class="blockk">
+
+                            <div class="qw">#{msg.proj_author}</div>
+
+                            <p>Java EE 6</p>
+                            <p>Maven</p>
+                            <p>Paraya 4.1.2</p>
+                            <p>NetBeans IDE 8.2</p>
+                            <p>MySQL 5.7</p>
+                            <p>Hibernate 5.2.1</p>
+                            <p>AJAX</p>
+                            <p></p>
+                            <p>JavaMail</p>
+                            <p>PrimeFaces 6.0</p>
+                            <p>Commons-io-2.5, Commons-fileupload-1.3.2</p>
+                            <p>Omnifaces 2.4</p>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bottom-info">
+                    <div class="button-right">
+                        <p:commandLink id="saveButton" styleClass="cancel" value="#{msg.close}" onclick="PF('dlgAboutProj').hide()"/>
+                    </div>
+                </div>
+
+            </h:form> 
+
+        </p:dialog>
+
+    </h:body>
+</html>
+
+
