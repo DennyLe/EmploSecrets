@@ -13,13 +13,13 @@ import javax.faces.validator.FacesValidator;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
-@FacesValidator("ru.javabegin.training.web.validators.LoginValidator")
+@FacesValidator("ru.emplosecrets.web.validators.LoginValidator")
 public class LoginValidator implements Validator {
 
     @Override
     public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 
-        ResourceBundle bundle = ResourceBundle.getBundle("ru.javabegin.training.web.nls.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+        ResourceBundle bundle = ResourceBundle.getBundle("ru.emplosecrets.web.nls.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
 
         try {
             String newValue = value.toString();
